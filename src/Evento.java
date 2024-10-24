@@ -72,4 +72,37 @@ public class Evento {
 	public int postiDisponibili() {
         return postiTotali - postiPrenotati;
     }
+	
+	public String prenota() {
+        if (eventoPassato()) {
+            return "L'evento è già passato. Non è possibile prenotare.";
+        }
+        if (postiDisponibili() == 0) {
+            return "Non ci sono più posti disponibili.";
+        }
+        postiPrenotati++;
+        return "Posto prenotato con successo!";
+    }
+
+    public String disdici() {
+        if (eventoPassato()) {
+            return "L'evento è già passato. Non è possibile disdire.";
+        }
+        if (postiPrenotati == 0) {
+            return "Non ci sono prenotazioni da disdire.";
+        }
+        postiPrenotati--;
+        return "Prenotazione disdetta con successo!";
+    }
+
+    private boolean eventoPassato() {
+        return dataEvento.isBefore(LocalDate.now());
+    }
+    
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataFormattata = dataEvento.format(formatter);
+        return dataFormattata + " - " + titoloEvento;
+    }
 }
